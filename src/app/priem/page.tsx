@@ -2,7 +2,6 @@
 
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, FileText, Calendar, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

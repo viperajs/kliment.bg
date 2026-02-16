@@ -1,7 +1,6 @@
 "use client";
 
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"; // Assuming shadcn Table but if not I'll just use divs or standard HTML table
 import { Trophy, CalendarClock, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
