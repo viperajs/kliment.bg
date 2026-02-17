@@ -11,6 +11,7 @@ import {
     GraduationCap,
     Menu,
     X,
+    MessageSquare,
 } from "lucide-react";
 import { useState } from "react";
 import { Toaster } from "sonner";
@@ -18,6 +19,7 @@ import { Toaster } from "sonner";
 const navItems = [
     { href: "/admin", label: "Табло", icon: LayoutDashboard },
     { href: "/admin/news", label: "Новини", icon: Newspaper },
+    { href: "/admin/messages", label: "Съобщения", icon: MessageSquare },
     { href: "/admin/settings", label: "Настройки", icon: Settings },
 ];
 

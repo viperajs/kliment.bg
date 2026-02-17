@@ -4,11 +4,55 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Loader2, CheckCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { submitContactForm } from "@/actions/contact";
+import { useState } from "react";
+import { Toaster, toast } from "sonner";
+
+type FormData = {
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    message: string;
+};
 
 export default function ContactPage() {
+    const [submitted, setSubmitted] = useState(false);
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors, isSubmitting },
+    } = useForm<FormData>();
+
+    const onSubmit = async (data: FormData) => {
+        const result = await submitContactForm(data);
+
+        if (result.error) {
+            toast.error(result.error);
+            return;
+        }
+
+        toast.success("Съобщението беше изпратено успешно!");
+        setSubmitted(true);
+        reset();
+        setTimeout(() => setSubmitted(false), 5000);
+    };
+
     return (
         <div className="bg-background min-h-screen">
+            <Toaster
+                position="top-right"
+                toastOptions={{
+                    style: {
+                        background: "#1e293b",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        color: "#f8fafc",
+                    },
+                }}
+            />
             <PageHeader
                 title="Контакти"
                 description="Свържете се с нас за въпроси и информация."
@@ -28,7 +72,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-white text-lg mb-1">Адрес</h3>
-                                    <p className="text-slate-400">ул. "Димчо Дебелянов" 4,<br />гр. Пещера, 4550</p>
+                                    <p className="text-slate-400">ул. &quot;Димчо Дебелянов&quot; 4,<br />гр. Пещера, 4550</p>
                                 </div>
                             </div>
 
@@ -71,39 +115,96 @@ export default function ContactPage() {
                     {/* Contact Form */}
                     <div className="glass-card p-10 rounded-2xl border border-white/10">
                         <h2 className="text-2xl font-bold text-white mb-6">Изпратете ни съобщение</h2>
-                        <form className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label htmlFor="name" className="text-sm font-medium text-slate-300">Име</label>
-                                    <Input id="name" placeholder="Вашето име" className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50" />
+
+                        {submitted ? (
+                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                                <CheckCircle className="w-16 h-16 text-green-400 mb-4" />
+                                <h3 className="text-xl font-bold text-white mb-2">Благодарим Ви!</h3>
+                                <p className="text-slate-400">Вашето съобщение беше изпратено успешно. Ще се свържем с Вас скоро.</p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label htmlFor="first_name" className="text-sm font-medium text-slate-300">Име</label>
+                                        <Input
+                                            id="first_name"
+                                            placeholder="Вашето име"
+                                            className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50"
+                                            {...register("first_name", { required: "Името е задължително" })}
+                                        />
+                                        {errors.first_name && <p className="text-red-400 text-xs">{errors.first_name.message}</p>}
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="last_name" className="text-sm font-medium text-slate-300">Фамилия</label>
+                                        <Input
+                                            id="last_name"
+                                            placeholder="Вашата фамилия"
+                                            className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50"
+                                            {...register("last_name", { required: "Фамилията е задължителна" })}
+                                        />
+                                        {errors.last_name && <p className="text-red-400 text-xs">{errors.last_name.message}</p>}
+                                    </div>
                                 </div>
+
                                 <div className="space-y-2">
-                                    <label htmlFor="surname" className="text-sm font-medium text-slate-300">Фамилия</label>
-                                    <Input id="surname" placeholder="Вашата фамилия" className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50" />
+                                    <label htmlFor="email" className="text-sm font-medium text-slate-300">Имейл</label>
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        placeholder="name@example.com"
+                                        className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50"
+                                        {...register("email", {
+                                            required: "Имейлът е задължителен",
+                                            pattern: { value: /^\S+@\S+\.\S+$/, message: "Невалиден имейл" },
+                                        })}
+                                    />
+                                    {errors.email && <p className="text-red-400 text-xs">{errors.email.message}</p>}
                                 </div>
-                            </div>
 
-                            <div className="space-y-2">
-                                <label htmlFor="email" className="text-sm font-medium text-slate-300">Имейл</label>
-                                <Input id="email" type="email" placeholder="name@example.com" className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50" />
-                            </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="phone" className="text-sm font-medium text-slate-300">Телефон</label>
+                                    <Input
+                                        id="phone"
+                                        type="tel"
+                                        placeholder="08XX XXX XXX"
+                                        className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50"
+                                        {...register("phone")}
+                                    />
+                                </div>
 
-                            <div className="space-y-2">
-                                <label htmlFor="phone" className="text-sm font-medium text-slate-300">Телефон</label>
-                                <Input id="phone" type="tel" placeholder="08XX XXX XXX" className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50" />
-                            </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="message" className="text-sm font-medium text-slate-300">Съобщение</label>
+                                    <Textarea
+                                        id="message"
+                                        placeholder="Вашето съобщение тук..."
+                                        className="min-h-[120px] bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50"
+                                        {...register("message", { required: "Съобщението е задължително" })}
+                                    />
+                                    {errors.message && <p className="text-red-400 text-xs">{errors.message.message}</p>}
+                                </div>
 
-                            <div className="space-y-2">
-                                <label htmlFor="message" className="text-sm font-medium text-slate-300">Съобщение</label>
-                                <Textarea id="message" placeholder="Вашето съобщение тук..." className="min-h-[120px] bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-primary/50" />
-                            </div>
-
-                            <div className="pt-2">
-                                <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 text-lg">
-                                    Изпрати запитване <Send className="ml-2 h-4 w-4" />
-                                </Button>
-                            </div>
-                        </form>
+                                <div className="pt-2">
+                                    <Button
+                                        type="submit"
+                                        size="lg"
+                                        disabled={isSubmitting}
+                                        className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 text-lg"
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                Изпращане...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Изпрати запитване <Send className="ml-2 h-4 w-4" />
+                                            </>
+                                        )}
+                                    </Button>
+                                </div>
+                            </form>
+                        )}
                     </div>
 
                 </div>
