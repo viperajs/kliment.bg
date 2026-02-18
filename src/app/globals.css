@@ -4,7 +4,6 @@
   --font-sans: var(--font-outfit);
   --font-serif: var(--font-playfair);
 
-  /* Deep Midnight Blue & Electric Gold Palette */
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
 
@@ -23,6 +22,8 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
 
+  --color-surface: var(--surface);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -36,93 +37,125 @@
   --animate-float: float 6s ease-in-out infinite;
 
   @keyframes fade-in {
-    0% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
   }
 
   @keyframes slide-up {
-    0% {
-      transform: translateY(30px);
-      opacity: 0;
-    }
-
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    0% { transform: translateY(30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
   }
 
   @keyframes float {
-
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-
-    50% {
-      transform: translateY(-10px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
 }
 
+/* ─── Light Theme (default) ─── */
 :root {
-  /* Premium Darker Theme Base */
-  --background: #0f172a;
-  /* Slate 900 - Deep Midnight */
+  --background: #ffffff;
+  --foreground: #0f172a;
+
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+
+  --secondary: #d97706;
+  --secondary-foreground: #ffffff;
+
+  --accent: #059669;
+  --accent-foreground: #ffffff;
+
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  --card: #f8fafc;
+  --card-foreground: #0f172a;
+
+  --surface: #ffffff;
+
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
+
+  --radius: 0.75rem;
+
+  /* Glass tokens for light */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
+  --glass-card-from: rgba(255, 255, 255, 0.8);
+  --glass-card-to: rgba(248, 250, 252, 0.6);
+
+  /* Blob colors for backgrounds */
+  --blob-primary: rgba(37, 99, 235, 0.08);
+  --blob-secondary: rgba(217, 119, 6, 0.06);
+
+  /* Hero specific */
+  --hero-bg: #f8fafc;
+  --hero-grid: #e2e8f0;
+  --hero-heading: #0f172a;
+  --hero-subtext: #475569;
+}
+
+/* ─── Dark Theme ─── */
+.dark {
+  --background: #0a0f1a;
   --foreground: #f8fafc;
-  /* Slate 50 */
 
   --primary: #3b82f6;
-  /* Blue 500 - Vibrant */
   --primary-foreground: #ffffff;
 
   --secondary: #fbbf24;
-  /* Amber 400 - Electric Gold */
   --secondary-foreground: #0f172a;
 
   --accent: #10b981;
-  /* Emerald 500 */
   --accent-foreground: #ffffff;
 
-  --muted: #1e293b;
-  /* Slate 800 */
+  --muted: #111827;
   --muted-foreground: #94a3b8;
-  /* Slate 400 */
 
-  --card: #1e293b;
-  /* Slate 800 */
+  --card: #111827;
   --card-foreground: #f8fafc;
 
-  --border: #334155;
-  /* Slate 700 */
-  --input: #334155;
+  --surface: #1e293b;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
   --ring: #3b82f6;
 
-  --radius: 0.75rem;
+  --glass-bg: rgba(17, 24, 39, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: rgba(0, 0, 0, 0.4);
+  --glass-card-from: rgba(255, 255, 255, 0.05);
+  --glass-card-to: rgba(255, 255, 255, 0.01);
+
+  --blob-primary: rgba(59, 130, 246, 0.15);
+  --blob-secondary: rgba(251, 191, 36, 0.08);
+
+  --hero-bg: #0a0f1a;
+  --hero-grid: #1e293b;
+  --hero-heading: #f8fafc;
+  --hero-subtext: #cbd5e1;
 }
 
-/* Glassmorphism Utilities */
+/* ─── Glassmorphism Utilities ─── */
 .glass {
-  background: rgba(30, 41, 59, 0.7);
+  background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background: linear-gradient(135deg, var(--glass-card-from) 0%, var(--glass-card-to) 100%);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 var(--glass-shadow);
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #60a5fa, #fbbf24);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -134,9 +167,9 @@ body {
   background: var(--background);
   font-family: var(--font-sans), sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
 }

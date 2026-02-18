@@ -25,8 +25,8 @@ export default async function MessagesPage() {
         <div>
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Съобщения</h1>
-                    <p className="text-slate-400 text-sm mt-1">
+                    <h1 className="text-xl md:text-2xl font-bold text-white">Съобщения</h1>
+                    <p className="text-slate-400 text-xs md:text-sm mt-1">
                         Съобщения от контактната форма
                     </p>
                 </div>
@@ -50,7 +50,7 @@ export default async function MessagesPage() {
                     {(messages as Message[]).map((msg) => (
                         <div
                             key={msg.id}
-                            className={`bg-slate-800/50 border rounded-xl p-6 transition-all ${
+                            className={`bg-slate-800/50 border rounded-xl p-4 md:p-6 transition-all ${
                                 msg.status === "new"
                                     ? "border-blue-500/30 bg-blue-500/5"
                                     : "border-white/10"
@@ -77,7 +77,7 @@ export default async function MessagesPage() {
                                         )}
                                     </div>
 
-                                    <div className="flex items-center gap-4 text-sm text-slate-400 mb-3">
+                                    <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-slate-400 mb-3">
                                         <a href={`mailto:${msg.email}`} className="hover:text-blue-400 transition-colors">
                                             {msg.email}
                                         </a>

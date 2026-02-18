@@ -13,17 +13,12 @@ export function FloatingDnevnik() {
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
 
-            // Show when scrolling down or at the top, hide when scrolling up (or vice versa depending on preference)
-            // The prompt says: "Hide when scrolling up, appear when scrolling down" - wait, usually it's the opposite for headers.
-            // Prompt text: "Скрива се при scroll нагоре, появява се при scroll надолу" -> Hides on scroll UP, shows on scroll DOWN.
-            // Let's implement exactly as requested.
-
             if (currentScrollY < 10) {
-                setIsVisible(true); // Always show at top
+                setIsVisible(true);
             } else if (currentScrollY > lastScrollY) {
-                setIsVisible(true); // Scrolling DOWN -> Show
+                setIsVisible(true);
             } else {
-                setIsVisible(false); // Scrolling UP -> Hide
+                setIsVisible(false);
             }
 
             setLastScrollY(currentScrollY);
@@ -45,19 +40,19 @@ export function FloatingDnevnik() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={cn(
-                        "fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-4",
-                        "bg-[#d97706] text-white rounded-full shadow-2xl shadow-orange-500/30",
-                        "border border-white/20 backdrop-blur-sm font-bold tracking-wide",
-                        "hover:bg-[#b45309] transition-colors"
+                        "fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center gap-2 md:gap-3 px-4 py-3 md:px-5 md:py-4",
+                        "bg-secondary text-secondary-foreground rounded-full shadow-2xl",
+                        "border border-border backdrop-blur-sm font-bold tracking-wide",
+                        "hover:bg-secondary/90 transition-colors"
                     )}
                 >
                     <motion.div
                         animate={{ rotate: [0, -10, 10, -10, 10, 0] }}
                         transition={{ duration: 2, repeat: Infinity, repeatDelay: 5 }}
                     >
-                        <BookOpen className="w-6 h-6" />
+                        <BookOpen className="w-5 h-5 md:w-6 md:h-6" />
                     </motion.div>
-                    <span className="hidden md:inline">Е-Дневник</span>
+                    <span className="hidden md:inline text-sm">Е-Дневник</span>
                 </motion.a>
             )}
         </AnimatePresence>

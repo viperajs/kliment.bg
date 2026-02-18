@@ -57,7 +57,7 @@ export default async function NewsDetailPage({
                 <div className="max-w-3xl mx-auto">
                     <Link
                         href="/novini"
-                        className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors mb-8"
+                        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         Към всички новини
@@ -88,12 +88,12 @@ export default async function NewsDetailPage({
                         </span>
                     </div>
 
-                    <h1 className="text-3xl md:text-4xl font-serif font-bold text-white mb-8 leading-tight">
+                    <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-8 leading-tight">
                         {news.title}
                     </h1>
 
                     {news.content && (
-                        <div className="prose prose-lg prose-invert text-slate-300 whitespace-pre-wrap">
+                        <div className="prose prose-lg dark:prose-invert text-foreground/80 whitespace-pre-wrap">
                             {news.content}
                         </div>
                     )}

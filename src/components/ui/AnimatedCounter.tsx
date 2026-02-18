@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useInView, useMotionValue, useSpring } from "framer-motion";
 
 interface AnimatedCounterProps {
@@ -12,7 +12,7 @@ interface AnimatedCounterProps {
 
 export function AnimatedCounter({ value, direction = "up", label, suffix = "" }: AnimatedCounterProps) {
     const ref = useRef<HTMLSpanElement>(null);
-    const motionValue = useMotionValue(0); // Start from 0
+    const motionValue = useMotionValue(0);
     const springValue = useSpring(motionValue, {
         damping: 50,
         stiffness: 100,
@@ -35,11 +35,11 @@ export function AnimatedCounter({ value, direction = "up", label, suffix = "" }:
 
     return (
         <div className="flex flex-col items-center">
-            <span className="flex items-baseline text-5xl md:text-6xl font-bold font-serif text-white tracking-tight">
+            <span className="flex items-baseline text-3xl sm:text-5xl md:text-6xl font-bold font-serif text-white tracking-tight">
                 <span ref={ref}>0</span>
-                {suffix && <span className="text-3xl ml-1 text-secondary">{suffix}</span>}
+                {suffix && <span className="text-xl sm:text-3xl ml-1 text-amber-300">{suffix}</span>}
             </span>
-            {label && <span className="text-slate-400 mt-2 text-sm uppercase tracking-widest font-bold">{label}</span>}
+            {label && <span className="text-white/70 mt-1 sm:mt-2 text-xs sm:text-sm uppercase tracking-widest font-bold">{label}</span>}
         </div>
     );
 }

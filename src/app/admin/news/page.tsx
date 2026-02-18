@@ -13,19 +13,20 @@ export default async function AdminNewsPage() {
 
     return (
         <div>
-            <div className="flex items-center justify-between mb-8">
-                <div>
-                    <h1 className="text-2xl font-bold text-white">Новини</h1>
-                    <p className="text-slate-400 text-sm mt-1">
+            <div className="flex items-center justify-between mb-6 md:mb-8 gap-4">
+                <div className="min-w-0">
+                    <h1 className="text-xl md:text-2xl font-bold text-white">Новини</h1>
+                    <p className="text-slate-400 text-xs md:text-sm mt-1">
                         Управление на новини и събития
                     </p>
                 </div>
                 <Link
                     href="/admin/news/new"
-                    className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium rounded-xl transition-all text-sm shadow-lg shadow-blue-500/20"
+                    className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium rounded-xl transition-all text-xs md:text-sm shadow-lg shadow-blue-500/20 shrink-0"
                 >
                     <Plus className="w-4 h-4" />
-                    Добави новина
+                    <span className="hidden sm:inline">Добави новина</span>
+                    <span className="sm:hidden">Добави</span>
                 </Link>
             </div>
 
@@ -34,7 +35,7 @@ export default async function AdminNewsPage() {
                     {news.map((item) => (
                         <div
                             key={item.id}
-                            className="flex items-center gap-4 p-5 hover:bg-white/[0.02] transition-colors"
+                            className="flex items-center gap-3 md:gap-4 p-3 md:p-5 hover:bg-white/[0.02] transition-colors"
                         >
                             {/* Thumbnail */}
                             {item.image_url && (

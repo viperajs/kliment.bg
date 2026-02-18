@@ -12,6 +12,8 @@ import {
     Menu,
     X,
     MessageSquare,
+    Users,
+    FileText,
 } from "lucide-react";
 import { useState } from "react";
 import { Toaster } from "sonner";
@@ -19,6 +21,8 @@ import { Toaster } from "sonner";
 const navItems = [
     { href: "/admin", label: "Табло", icon: LayoutDashboard },
     { href: "/admin/news", label: "Новини", icon: Newspaper },
+    { href: "/admin/teachers", label: "Екип", icon: Users },
+    { href: "/admin/documents", label: "Документи", icon: FileText },
     { href: "/admin/messages", label: "Съобщения", icon: MessageSquare },
     { href: "/admin/settings", label: "Настройки", icon: Settings },
 ];
@@ -142,7 +146,7 @@ export function AdminShell({
                     </span>
                 </header>
 
-                <main className="p-6 lg:p-8">{children}</main>
+                <main className="p-4 md:p-6 lg:p-8">{children}</main>
             </div>
         </div>
     );

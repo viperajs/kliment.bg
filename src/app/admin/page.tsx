@@ -43,15 +43,15 @@ export default async function AdminDashboard() {
 
     return (
         <div>
-            <div className="mb-8">
-                <h1 className="text-2xl font-bold text-white">Табло</h1>
-                <p className="text-slate-400 text-sm mt-1">
+            <div className="mb-6 md:mb-8">
+                <h1 className="text-xl md:text-2xl font-bold text-white">Табло</h1>
+                <p className="text-slate-400 text-xs md:text-sm mt-1">
                     Преглед на сайта
                 </p>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-6 md:mb-8">
                 {stats.map((stat) => (
                     <div
                         key={stat.label}
@@ -93,7 +93,7 @@ export default async function AdminDashboard() {
                             <Link
                                 key={item.id}
                                 href={`/admin/news/${item.id}`}
-                                className="flex items-center gap-4 p-5 hover:bg-white/[0.02] transition-colors"
+                                className="flex items-center gap-3 md:gap-4 p-3 md:p-5 hover:bg-white/[0.02] transition-colors"
                             >
                                 <div className="flex-1 min-w-0">
                                     <p className="text-white text-sm font-medium truncate">

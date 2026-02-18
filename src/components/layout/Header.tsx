@@ -6,10 +6,9 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-    Menu, X, ChevronDown, Phone, Mail
-} from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 const navigation = [
     { name: "Начало", href: "/" },
@@ -46,7 +45,6 @@ const navigation = [
         href: "#",
         submenu: [
             { name: "Електронен дневник", href: "https://app.shkolo.bg/", external: true },
-            { name: "Меню (столова)", href: "/roditeli#menyu" },
         ]
     },
     { name: "Новини", href: "/novini" },
@@ -59,6 +57,7 @@ export function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
     const pathname = usePathname();
+    const isAdmin = pathname.startsWith("/admin");
 
     useEffect(() => {
         const handleScroll = () => {
@@ -69,22 +68,25 @@ export function Header() {
     }, []);
 
     const toggleSubmenu = (name: string) => {
-        if (activeSubmenu === name) {
-            setActiveSubmenu(null);
-        } else {
-            setActiveSubmenu(name);
-        }
+        setActiveSubmenu(activeSubmenu === name ? null : name);
     };
+
+    // Don't render the public header on admin pages
+    if (isAdmin) {
+        return null;
+    }
 
     return (
         <>
             <header className={cn(
-                "fixed top-12 left-0 right-0 z-50 transition-all duration-300 font-sans px-4 md:px-6",
-                isScrolled ? "py-0 top-0" : "py-2 top-10"
+                "fixed left-0 right-0 z-50 transition-all duration-300 font-sans px-4 md:px-6",
+                isScrolled ? "py-0 top-0" : "py-2 top-0 md:top-10"
             )}>
                 <div className={cn(
-                    "mx-auto max-w-7xl rounded-2xl border border-white/10 transition-all duration-300 backdrop-blur-md flex items-center justify-between px-4 py-3 shadow-2xl",
-                    isScrolled ? "bg-[#0f172a]/90 rounded-none w-full max-w-full px-6 border-x-0 border-t-0" : "bg-[#1e293b]/80"
+                    "mx-auto max-w-7xl rounded-2xl border border-border transition-all duration-300 backdrop-blur-md flex items-center justify-between px-4 py-3 shadow-2xl",
+                    isScrolled
+                        ? "bg-background/90 rounded-none w-full max-w-full px-6 border-x-0 border-t-0"
+                        : "bg-card/80"
                 )}>
 
                     {/* Logo */}
@@ -99,8 +101,8 @@ export function Header() {
                             />
                         </div>
                         <div className="flex flex-col">
-                            <span className="font-serif font-bold text-white text-base leading-none">СУ Св. Климент</span>
-                            <span className="text-[10px] text-blue-200 uppercase tracking-widest mt-1">Охридски</span>
+                            <span className="font-serif font-bold text-foreground text-base leading-none">СУ Св. Климент</span>
+                            <span className="text-[10px] text-primary uppercase tracking-widest mt-1">Охридски</span>
                         </div>
                     </Link>
 
@@ -111,8 +113,10 @@ export function Header() {
                                 {item.submenu ? (
                                     <button
                                         className={cn(
-                                            "flex items-center text-sm font-medium transition-all px-3 py-2 rounded-lg hover:bg-white/10",
-                                            pathname.startsWith(item.href) && item.href !== '#' ? "text-secondary" : "text-white/80 hover:text-white"
+                                            "flex items-center text-sm font-medium transition-all px-3 py-2 rounded-lg hover:bg-muted",
+                                            pathname.startsWith(item.href) && item.href !== '#'
+                                                ? "text-secondary"
+                                                : "text-foreground/70 hover:text-foreground"
                                         )}
                                     >
                                         {item.name}
@@ -122,24 +126,26 @@ export function Header() {
                                     <Link
                                         href={item.href}
                                         className={cn(
-                                            "flex items-center text-sm font-medium transition-all px-3 py-2 rounded-lg hover:bg-white/10",
-                                            pathname === item.href ? "text-secondary bg-white/10" : "text-white/80 hover:text-white"
+                                            "flex items-center text-sm font-medium transition-all px-3 py-2 rounded-lg hover:bg-muted",
+                                            pathname === item.href
+                                                ? "text-secondary bg-muted"
+                                                : "text-foreground/70 hover:text-foreground"
                                         )}
                                     >
                                         {item.name}
                                     </Link>
                                 )}
 
-                                {/* Modern Dropdown */}
+                                {/* Dropdown */}
                                 {item.submenu && (
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2 z-50 w-56">
-                                        <div className="bg-[#1e293b] rounded-xl shadow-2xl border border-white/10 p-1 overflow-hidden ring-1 ring-black/5">
+                                        <div className="bg-card rounded-xl shadow-2xl border border-border p-1 overflow-hidden">
                                             {item.submenu.map((subItem) => (
                                                 <Link
                                                     key={subItem.name}
                                                     href={subItem.href}
-                                                    target={subItem.external ? "_blank" : undefined}
-                                                    className="block px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                                    target={"external" in subItem && subItem.external ? "_blank" : undefined}
+                                                    className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
                                                 >
                                                     {subItem.name}
                                                 </Link>
@@ -151,14 +157,15 @@ export function Header() {
                         ))}
                     </nav>
 
-                    {/* CTA / Mobile Toggle */}
+                    {/* CTA / Theme Toggle / Mobile Toggle */}
                     <div className="flex items-center space-x-3">
-                        <Button size="sm" className="hidden xl:flex bg-secondary hover:bg-secondary/90 text-slate-900 font-bold rounded-xl shadow-lg shadow-amber-500/20" asChild>
+                        <ThemeToggle />
+                        <Button size="sm" className="hidden xl:flex bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold rounded-xl shadow-lg" asChild>
                             <Link href="/kontakti">Свържете се с нас</Link>
                         </Button>
 
                         <button
-                            className="lg:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
+                            className="lg:hidden p-2 text-foreground hover:bg-muted rounded-lg transition-colors"
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         >
                             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -175,13 +182,13 @@ export function Header() {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed inset-0 z-40 bg-[#0f172a] pt-28 px-4 overflow-y-auto lg:hidden"
+                        className="fixed inset-0 z-40 bg-background pt-28 px-4 overflow-y-auto lg:hidden"
                     >
                         <nav className="flex flex-col space-y-2">
                             {navigation.map((item) => (
-                                <div key={item.name} className="border-b border-white/5 pb-2">
+                                <div key={item.name} className="border-b border-border pb-2">
                                     <div
-                                        className="flex items-center justify-between text-lg font-medium py-3 px-2 text-white/90"
+                                        className="flex items-center justify-between text-lg font-medium py-3 px-2 text-foreground/90"
                                         onClick={() => item.submenu ? toggleSubmenu(item.name) : (setMobileMenuOpen(false))}
                                     >
                                         {item.submenu ? (
@@ -197,7 +204,7 @@ export function Header() {
                                         )}
                                         {item.submenu && (
                                             <ChevronDown className={cn(
-                                                "h-5 w-5 transition-transform text-white/50",
+                                                "h-5 w-5 transition-transform text-muted-foreground",
                                                 activeSubmenu === item.name ? "rotate-180 text-secondary" : ""
                                             )} />
                                         )}
@@ -209,14 +216,14 @@ export function Header() {
                                                 initial={{ height: 0, opacity: 0 }}
                                                 animate={{ height: "auto", opacity: 1 }}
                                                 exit={{ height: 0, opacity: 0 }}
-                                                className="overflow-hidden bg-white/5 rounded-lg mt-1"
+                                                className="overflow-hidden bg-muted rounded-lg mt-1"
                                             >
                                                 {item.submenu.map((subItem) => (
                                                     <Link
                                                         key={subItem.name}
                                                         href={subItem.href}
-                                                        target={subItem.external ? "_blank" : undefined}
-                                                        className="block px-4 py-3 text-sm text-white/60 hover:text-white"
+                                                        target={"external" in subItem && subItem.external ? "_blank" : undefined}
+                                                        className="block px-4 py-3 text-sm text-muted-foreground hover:text-foreground"
                                                         onClick={() => setMobileMenuOpen(false)}
                                                     >
                                                         {subItem.name}

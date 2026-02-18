@@ -11,13 +11,10 @@ import {
     Sparkles,
 } from "lucide-react";
 import {
-    teamMembers,
     categoryLabels,
     type TeamCategory,
     type TeamMember,
 } from "@/lib/team";
-
-// ─── Config ───
 
 const categoryConfig: Record<
     TeamCategory,
@@ -35,8 +32,8 @@ const categoryConfig: Record<
         icon: Crown,
         gradient: "from-amber-500/10 via-orange-500/5 to-transparent",
         glow: "group-hover:shadow-amber-500/10",
-        badge: "bg-amber-500/15 text-amber-300 ring-amber-500/20",
-        accent: "text-amber-400",
+        badge: "bg-amber-500/15 text-amber-700 dark:text-amber-300 ring-amber-500/20",
+        accent: "text-amber-500 dark:text-amber-400",
         ring: "ring-amber-500/30",
         avatarGradient: "from-amber-400 to-orange-500",
     },
@@ -44,8 +41,8 @@ const categoryConfig: Record<
         icon: GraduationCap,
         gradient: "from-blue-500/10 via-indigo-500/5 to-transparent",
         glow: "group-hover:shadow-blue-500/10",
-        badge: "bg-blue-500/15 text-blue-300 ring-blue-500/20",
-        accent: "text-blue-400",
+        badge: "bg-blue-500/15 text-blue-700 dark:text-blue-300 ring-blue-500/20",
+        accent: "text-blue-500 dark:text-blue-400",
         ring: "ring-blue-500/30",
         avatarGradient: "from-blue-400 to-indigo-500",
     },
@@ -53,8 +50,8 @@ const categoryConfig: Record<
         icon: Wrench,
         gradient: "from-emerald-500/10 via-teal-500/5 to-transparent",
         glow: "group-hover:shadow-emerald-500/10",
-        badge: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/20",
-        accent: "text-emerald-400",
+        badge: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 ring-emerald-500/20",
+        accent: "text-emerald-500 dark:text-emerald-400",
         ring: "ring-emerald-500/30",
         avatarGradient: "from-emerald-400 to-teal-500",
     },
@@ -65,8 +62,6 @@ function getInitials(name: string) {
     if (parts.length >= 2) return parts[0][0] + parts[parts.length - 1][0];
     return parts[0][0];
 }
-
-// ─── Expanded Card (selected member) ───
 
 function ExpandedCard({
     member,
@@ -80,7 +75,7 @@ function ExpandedCard({
     return (
         <motion.div
             layoutId={`card-${member.email}`}
-            className={`col-span-full bg-[#1e293b]/80 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden cursor-pointer shadow-2xl shadow-black/30`}
+            className="col-span-full bg-card/80 backdrop-blur-xl rounded-2xl border border-border overflow-hidden cursor-pointer shadow-2xl"
             onClick={onClose}
         >
             <div className={`bg-gradient-to-r ${config.gradient} p-6 md:p-8`}>
@@ -94,7 +89,7 @@ function ExpandedCard({
                     <div className="flex-1">
                         <motion.h3
                             layoutId={`name-${member.email}`}
-                            className="text-xl md:text-2xl font-bold text-white mb-1"
+                            className="text-xl md:text-2xl font-bold text-foreground mb-1"
                         >
                             {member.name}
                         </motion.h3>
@@ -111,12 +106,12 @@ function ExpandedCard({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.15 }}
-                    className="mt-5 pt-5 border-t border-white/10"
+                    className="mt-5 pt-5 border-t border-border"
                 >
                     <a
                         href={`mailto:${member.email}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 rounded-xl text-sm text-slate-300 hover:text-white transition-all border border-white/5 hover:border-white/15"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-muted hover:bg-muted/80 rounded-xl text-sm text-foreground/80 hover:text-foreground transition-all border border-border"
                     >
                         <Mail className={`w-4 h-4 ${config.accent}`} />
                         {member.email}
@@ -126,8 +121,6 @@ function ExpandedCard({
         </motion.div>
     );
 }
-
-// ─── Compact Card ───
 
 function CompactCard({
     member,
@@ -152,9 +145,8 @@ function CompactCard({
                 ease: [0.25, 0.46, 0.45, 0.94],
             }}
             onClick={onSelect}
-            className={`group relative bg-[#1e293b]/60 backdrop-blur-sm rounded-2xl border border-white/[0.06] overflow-hidden cursor-pointer transition-all duration-300 hover:border-white/15 hover:shadow-xl ${config.glow} hover:bg-[#1e293b]/90`}
+            className={`group relative bg-card/60 backdrop-blur-sm rounded-2xl border border-border overflow-hidden cursor-pointer transition-all duration-300 hover:border-border hover:shadow-xl ${config.glow} hover:bg-card/90`}
         >
-            {/* Top accent line */}
             <div
                 className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${config.avatarGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
             />
@@ -171,7 +163,7 @@ function CompactCard({
                     <div className="min-w-0 flex-1">
                         <motion.h3
                             layoutId={`name-${member.email}`}
-                            className="text-white font-semibold text-sm leading-tight truncate group-hover:text-white/95"
+                            className="text-foreground font-semibold text-sm leading-tight truncate"
                         >
                             {member.name}
                         </motion.h3>
@@ -184,12 +176,11 @@ function CompactCard({
                     </div>
                 </div>
 
-                {/* Email row - slides up on hover */}
-                <div className="mt-3 pt-3 border-t border-white/[0.04] group-hover:border-white/[0.08] transition-colors">
+                <div className="mt-3 pt-3 border-t border-border/50 group-hover:border-border transition-colors">
                     <a
                         href={`mailto:${member.email}`}
                         onClick={(e) => e.stopPropagation()}
-                        className={`flex items-center gap-1.5 text-slate-500 group-hover:text-slate-300 text-xs transition-colors`}
+                        className="flex items-center gap-1.5 text-muted-foreground group-hover:text-foreground/80 text-xs transition-colors"
                     >
                         <Mail
                             className={`w-3.5 h-3.5 shrink-0 ${config.accent} opacity-50 group-hover:opacity-100 transition-opacity`}
@@ -201,8 +192,6 @@ function CompactCard({
         </motion.div>
     );
 }
-
-// ─── Category Accordion ───
 
 function CategoryAccordion({
     category,
@@ -218,7 +207,6 @@ function CategoryAccordion({
 
     return (
         <div>
-            {/* Accordion Header */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex items-center gap-3 py-4 group cursor-pointer"
@@ -229,10 +217,10 @@ function CategoryAccordion({
                     <Icon className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 text-left">
-                    <h3 className="text-lg font-bold text-white">
+                    <h3 className="text-lg font-bold text-foreground">
                         {categoryLabels[category]}
                     </h3>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-muted-foreground">
                         {members.length}{" "}
                         {members.length === 1 ? "член" : "члена"}
                     </p>
@@ -241,11 +229,10 @@ function CategoryAccordion({
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
                 >
-                    <ChevronDown className="w-5 h-5 text-slate-500 group-hover:text-slate-300 transition-colors" />
+                    <ChevronDown className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
                 </motion.div>
             </button>
 
-            {/* Accordion Content */}
             <AnimatePresence initial={false}>
                 {isOpen && (
                     <motion.div
@@ -292,18 +279,17 @@ function CategoryAccordion({
     );
 }
 
-// ─── Main Section ───
-
-export function TeamSection() {
+export function TeamSection({ members }: { members: TeamMember[] }) {
     const grouped: Record<TeamCategory, TeamMember[]> = {
-        management: teamMembers.filter((m) => m.category === "management"),
-        teachers: teamMembers.filter((m) => m.category === "teachers"),
-        support: teamMembers.filter((m) => m.category === "support"),
+        management: members.filter((m) => m.category === "management"),
+        teachers: members.filter((m) => m.category === "teachers"),
+        support: members.filter((m) => m.category === "support"),
     };
+
+    const totalCount = members.length;
 
     return (
         <div className="space-y-2">
-            {/* Stats bar */}
             <div className="flex flex-wrap items-center gap-4 mb-6 px-1">
                 {(
                     Object.entries(grouped) as [TeamCategory, TeamMember[]][]
@@ -313,35 +299,33 @@ export function TeamSection() {
                     return (
                         <div
                             key={cat}
-                            className="flex items-center gap-2 text-sm text-slate-400"
+                            className="flex items-center gap-2 text-sm text-muted-foreground"
                         >
                             <Icon className={`w-4 h-4 ${config.accent}`} />
                             <span>
                                 {categoryLabels[cat]}:{" "}
-                                <span className="text-white font-semibold">
+                                <span className="text-foreground font-semibold">
                                     {members.length}
                                 </span>
                             </span>
                         </div>
                     );
                 })}
-                <div className="text-sm text-slate-500 ml-auto">
+                <div className="text-sm text-muted-foreground ml-auto">
                     Общо:{" "}
-                    <span className="text-white font-semibold">
-                        {teamMembers.length}
+                    <span className="text-foreground font-semibold">
+                        {totalCount}
                     </span>
                 </div>
             </div>
 
-            {/* Divider */}
-            <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-            {/* Accordions */}
             {(Object.entries(grouped) as [TeamCategory, TeamMember[]][]).map(
                 ([cat, members]) => (
                     <div key={cat}>
                         <CategoryAccordion category={cat} members={members} />
-                        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
                     </div>
                 )
             )}
